@@ -11,15 +11,25 @@
 <hr/>
 <form th:action="@{/saveOrUpdateExpense}" th:object="${expense}" method="post">
     <input type="text" placeholder="Enter expense name" th:field="*{name}"/>
+    <p style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
     <br/><br/>
     <input type="text" placeholder="Enter expense amount" th:field="*{amount}"/>
+    <p style="color:red" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></p>
     <br/><br/>
     <input type="text" th:field="*{dateString}" placeholder="dd/mm/yyyy" id="createdAt"/>
+    <p style="color:red" th:if="${#fields.hasErrors('dateString')}" th:errors="*{dateString}"></p>
     <br/><br/>
     <textarea rows="5" placeholder="Enter description" th:field="*{description}"></textarea>
     <br/><br/>
     <button type="submit">Submit</button>
+
+    <input type="hidden" th:field="*{id}"/>
+    <input type="hidden" th:field="*{expenseId}"/>
 </form>
+
+<div>
+    <a th:href="@{/expenses}">Back to Expenses</a>
+</div>
 
 <script th:src="@{/js/jquery.js}"></script>
 <script th:src="@{/js/jquery-ui.js}"></script>
