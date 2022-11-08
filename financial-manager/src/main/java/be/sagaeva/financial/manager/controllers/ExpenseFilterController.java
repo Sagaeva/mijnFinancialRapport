@@ -24,6 +24,8 @@ public class ExpenseFilterController {
        List<ExpenseDto> list =  expenseService
                .getFilteredExpense(expenseFilterDto);
        model.addAttribute("expenses", list);
+        String totalExpenses = expenseService.totalExpenses(list);
+        model.addAttribute("totalExpenses", totalExpenses);
         return "expenses-list";
     }
 }

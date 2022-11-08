@@ -1,6 +1,7 @@
 package be.sagaeva.financial.manager.services;
 
 import be.sagaeva.financial.manager.data.Expense;
+import be.sagaeva.financial.manager.data.User;
 import be.sagaeva.financial.manager.dto.ExpenseDto;
 import be.sagaeva.financial.manager.dto.ExpenseFilterDto;
 import be.sagaeva.financial.manager.repositories.ExpenseRepository;
@@ -27,11 +28,14 @@ public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
     private final ModelMapper modelMapper;
+    private final UserService userService;
 
 
 
     public List<ExpenseDto> getAllExpenses() {
-        List<Expense> list =  expenseRepository.findAll();
+        User user = userService.getLoggedInUser();
+
+        List<Expense> list =  expenseRepository.findByUserId(user.getId());
         List<ExpenseDto>  expenseDtoList = list.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
@@ -40,6 +44,8 @@ public class ExpenseService {
 
     public ExpenseDto saveExpenseDetails(ExpenseDto expenseDto) throws ParseException {
         Expense expense = mapToEntity(expenseDto);
+        expense.setUser(userService.getLoggedInUser());
+
         expense = expenseRepository.save(expense);
         return mapToDTO(expense);
     }
@@ -62,7 +68,8 @@ public class ExpenseService {
         String endDateString = expenseFilterDto.getEndDate();
         Date startDate =  !startDateString.isEmpty() ? DateTimeUtil.convertStringToDate(startDateString) : new Date(0);
         Date endDate = !endDateString.isEmpty() ? DateTimeUtil.convertStringToDate(endDateString) : new Date(System.currentTimeMillis());
-        List<Expense> list = expenseRepository.findByNameContainingAndDateBetween(keyword, startDate, endDate);
+        User user = userService.getLoggedInUser();
+        List<Expense> list = expenseRepository.findByNameContainingAndDateBetweenAndUserId(keyword, startDate, endDate, user.getId());
         List<ExpenseDto> filteredList = list.stream().map(this::mapToDTO)
                 .collect(Collectors.toList());
         if(sortBy.equals("date")) {

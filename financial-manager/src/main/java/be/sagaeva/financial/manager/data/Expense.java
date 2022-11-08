@@ -28,4 +28,7 @@ public class Expense {
     private String description;
     private BigDecimal amount;
     private Date date;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = true)
+    private User user;
 }
