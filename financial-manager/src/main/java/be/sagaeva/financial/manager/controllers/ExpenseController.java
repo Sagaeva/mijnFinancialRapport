@@ -3,6 +3,7 @@ package be.sagaeva.financial.manager.controllers;
 import be.sagaeva.financial.manager.dto.ExpenseDto;
 import be.sagaeva.financial.manager.dto.ExpenseFilterDto;
 import be.sagaeva.financial.manager.services.ExpenseService;
+import be.sagaeva.financial.manager.util.DateTimeUtil;
 import be.sagaeva.financial.manager.validator.ExpenseValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.Banner;
@@ -30,7 +31,8 @@ public class ExpenseController {
     public String showExpenseList(Model model) {
        List<ExpenseDto> list = expenseService.getAllExpenses();
        model.addAttribute("expenses", list);
-       model.addAttribute("filter", new ExpenseFilterDto());
+       model.addAttribute("filter", new ExpenseFilterDto(DateTimeUtil
+               .getCurrentMonthStartDate(), DateTimeUtil.getCurrentMonthDate()));
        String totalExpenses = expenseService.totalExpenses(list);
        model.addAttribute("totalExpenses", totalExpenses);
         return "expenses-list";

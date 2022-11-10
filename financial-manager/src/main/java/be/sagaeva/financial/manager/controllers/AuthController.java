@@ -3,6 +3,9 @@ package be.sagaeva.financial.manager.controllers;
 import be.sagaeva.financial.manager.dto.UserDTO;
 import be.sagaeva.financial.manager.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +23,12 @@ public class AuthController {
 
     @GetMapping({"/login", "/"})
     public String showLoginPage(){
-        return "login";
+       Authentication auth =  SecurityContextHolder.getContext().getAuthentication();
+       if(auth == null || auth instanceof AnonymousAuthenticationToken) {
+           return "login";
+
+       }
+        return "redirect:expenses";
     }
 
 
@@ -39,6 +47,6 @@ public class AuthController {
         }
         userService.save(userDTO);
         model.addAttribute("successMsg", true);
-        return "login";
+        return "response";
     }
 }

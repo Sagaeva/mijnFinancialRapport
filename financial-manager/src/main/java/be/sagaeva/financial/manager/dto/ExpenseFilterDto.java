@@ -13,4 +13,10 @@ public class ExpenseFilterDto {
     private String sortBy;
     private String startDate;
     private String endDate;
+
+    public ExpenseFilterDto(String startDate, String endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+
+    }
 }
