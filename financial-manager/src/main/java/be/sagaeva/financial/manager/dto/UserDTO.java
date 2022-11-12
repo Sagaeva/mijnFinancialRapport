@@ -16,9 +16,11 @@ public class UserDTO {
     @NotBlank(message = "User name should not be null")
     private String name;
     @Email(message = "Invalid email address")
+    @NotBlank(message = "Email  should not be null")
     private String email;
     @NotBlank(message = "Password  should not be null")
     @Size(min = 5, message = "Password should be minimum {min} characters")
     private String password;
+    @NotBlank(message = "Confirm password  should not be null")
     private String confirmPassword;
 }

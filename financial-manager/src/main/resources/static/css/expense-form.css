@@ -1,0 +1,15 @@
+.main-content{
+ margin-top: 5rem;
+}
+.bg-header-color{
+  background-color: #4B0082;
+}
+.app-header{
+  margin: 0auto;
+  padding: 0;
+  max-width: 75rem;
+}
+.input-width{
+   width: 60%;
+
+}
