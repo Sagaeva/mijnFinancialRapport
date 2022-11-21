@@ -37,6 +37,7 @@
                 <a class="btn button_default text-white" th:href="@{/createExpense}">Create Expense</a>
                 <a class="btn button_default text-white" th:href="@{/createIncome}">Create Income</a>
                 <a class="btn button_default text-white" th:href="@{/incomes}"> My Income</a>
+                <a class="btn button_default text-white" th:href="@{/expenses}"> My Expense</a>
             </div>
         </div>
     </div>
@@ -89,13 +90,30 @@
 
 <div class="main-content">
     <div class="container-fluid bg-light py-4 mb-2">
-        <div class="app-header">
-            <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+        <div class="container overflow-hidden">
+            <div class="row gx-5">
+                <div class="col">
+                    <div class="p-3 border bg-light">
+                        <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+                        </div>
+                </div>
+                <div class="col">
+                    <div class="alert alert-success" role="alert" th:if="${surplus}">
+                        <h1 class="font-weight-light text-success">
+                            Your surplus is:
+                            <span th:text="${surplus} + '&#8364;'"></span>
+                        </h1>
 
-            <h2 class="font-weight-light">
-                Your incomes totaling of
-                <span th:text="${totalIncomes}" id="incomesDonut"></span>
-            </h2>
+                    </div>
+                    <div class="alert alert-danger" role="alert" th:if="${deficit}">
+                        <h1 class="font-weight-light">
+                            Your deficit is:
+                            <span th:text="${deficit} + '&#8364;'"></span>
+                        </h1>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

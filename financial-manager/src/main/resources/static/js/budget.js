@@ -10,12 +10,14 @@ var transaction_x = totalExpenses.map(x => x["name"])
 
 
 var barColors = [
-  "#b91d47",
   "#e8c3b9",
   "#00aba9",
    "#2b5797",
    "#e8c3b9",
-   "#1e7145"
+   "#1e7145",
+   "#b91d47",
+   "#d63384",
+   "#fd7e14"
 ];
 
 

@@ -1,7 +1,5 @@
 package be.sagaeva.financial.manager.data;
 
-import be.sagaeva.financial.manager.dto.ExpenseDto;
-import be.sagaeva.financial.manager.dto.IncomeDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,5 +30,7 @@ public class Budget {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
+
+
 
 }
