@@ -1,40 +1,49 @@
 package be.sagaeva.financial.manager.controllers;
 
+import be.sagaeva.financial.manager.data.Expense;
 import be.sagaeva.financial.manager.dto.ExpenseDto;
 import be.sagaeva.financial.manager.dto.ExpenseFilterDto;
+
 import be.sagaeva.financial.manager.services.ExpenseService;
+
+import be.sagaeva.financial.manager.services.ExportPdfService;
+
 import be.sagaeva.financial.manager.util.DateTimeUtil;
 import be.sagaeva.financial.manager.validator.ExpenseValidator;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.boot.Banner;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
-public class ExpenseController {
+public class ExpenseController   {
 
     private final ExpenseService expenseService;
-
+    private final ExportPdfService exportPdfService;
 
 
     @GetMapping("/expenses")
     public String showExpenseList(Model model) {
-       List<ExpenseDto> list = expenseService.getAllExpenses();
-       model.addAttribute("expenses", list);
-       model.addAttribute("filter", new ExpenseFilterDto(DateTimeUtil
-               .getCurrentMonthStartDate(), DateTimeUtil.getCurrentMonthDate()));
-       String totalExpenses = expenseService.totalExpenses(list);
-       model.addAttribute("totalExpenses", totalExpenses);
+        List<ExpenseDto> list = expenseService.getAllExpenses();
+        model.addAttribute("expenses", list);
+        model.addAttribute("filter", new ExpenseFilterDto(DateTimeUtil
+                .getCurrentMonthStartDate(), DateTimeUtil.getCurrentMonthDate()));
+        String totalExpenses = expenseService.totalExpenses(list);
+        model.addAttribute("totalExpenses", totalExpenses);
         return "expenses-list";
     }
 
@@ -47,7 +56,7 @@ public class ExpenseController {
     @PostMapping("/saveOrUpdateExpense")
     public String saveOrdateExpenseDetails(@Valid @ModelAttribute("expense") ExpenseDto expenseDto,
                                            BindingResult result) throws ParseException {
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             new ExpenseValidator().validate(expenseDto, result);
             return "expense-form";
         }
@@ -66,6 +75,21 @@ public class ExpenseController {
         ExpenseDto expense = expenseService.getExpenseById(id);
         model.addAttribute("expense", expense);
         return "expense-form";
+    }
+
+
+
+    @GetMapping("/createPdf")
+    public String createPDF(HttpServletResponse response) throws IOException {
+        Map<String, Object> data = new HashMap<>();
+        data.put("expense", expenseService.getAllExpenses());
+        ByteArrayInputStream exportedData = exportPdfService.exportPdf("expenses-list", data);
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=expense.pdf");
+        IOUtils.copy(exportedData, response.getOutputStream());
+        return "redirect:/expenses-list";
+
+
     }
 
 

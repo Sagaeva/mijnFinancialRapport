@@ -49,7 +49,6 @@ public class BudgeController {
         model.addAttribute("totalIncomes", totalIncomes);
         model.addAttribute("totalExpenses", expenseService.getAllExpenses());
         budgetService.saveBudget(budget);
-        System.out.println("проверка" + budget);
         model.addAttribute("surplus", budget.getSurplus());
         model.addAttribute("deficit", budget.getDeficit());
         return "budget-form";

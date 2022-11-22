@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <title>expenses-list</title>
 </head>
-<link rel="stylesheet" th:href="@{/css/jquery-ui.css}"/>
+
+
+<link rel="stylesheet" th:href="@{/css/jquery-ui.css}" />
 <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 <link rel="stylesheet" th:href="@{/css/base.css}"/>
 <link rel="stylesheet" th:href="@{/css/expenses-list.css}"/>
+
 <body>
 <nav class="fixed-top bg-header-color py-4">
     <div class="app-header">
@@ -36,6 +39,7 @@
                 <a class="btn button_default text-white" th:href="@{/createIncome}">Create Income</a>
                 <a class="btn button_default text-white" th:href="@{/incomes}"> My Income</a>
                 <a class="btn button_default text-white" th:href="@{/budget}"> My Budget</a>
+                <a class="btn button_default text-white" th:href="@{/createPdf}"> Generate PDF</a>
             </div>
         </div>
     </div>
