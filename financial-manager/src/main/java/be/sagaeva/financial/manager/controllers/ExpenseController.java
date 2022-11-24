@@ -1,6 +1,7 @@
 package be.sagaeva.financial.manager.controllers;
 
 import be.sagaeva.financial.manager.data.Expense;
+import be.sagaeva.financial.manager.data.User;
 import be.sagaeva.financial.manager.dto.ExpenseDto;
 import be.sagaeva.financial.manager.dto.ExpenseFilterDto;
 
@@ -8,6 +9,7 @@ import be.sagaeva.financial.manager.services.ExpenseService;
 
 import be.sagaeva.financial.manager.services.ExportPdfService;
 
+import be.sagaeva.financial.manager.services.UserService;
 import be.sagaeva.financial.manager.util.DateTimeUtil;
 import be.sagaeva.financial.manager.validator.ExpenseValidator;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class ExpenseController   {
 
     private final ExpenseService expenseService;
     private final ExportPdfService exportPdfService;
+    private final UserService userService;
 
 
     @GetMapping("/expenses")
@@ -80,16 +83,22 @@ public class ExpenseController   {
 
 
     @GetMapping("/createPdf")
-    public String createPDF(HttpServletResponse response) throws IOException {
-        Map<String, Object> data = new HashMap<>();
-        data.put("expense", expenseService.getAllExpenses());
-        ByteArrayInputStream exportedData = exportPdfService.exportPdf("expenses-list", data);
+    public void createPDF(HttpServletResponse response) throws IOException {
+        Map<String, Object> data = createdData();
+        ByteArrayInputStream exportedData = exportPdfService.exportPdf("expense", data);
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition", "attachment; filename=expense.pdf");
         IOUtils.copy(exportedData, response.getOutputStream());
-        return "redirect:/expenses-list";
 
+    }
 
+    private Map<String, Object> createdData() {
+        Map<String, Object> data = new HashMap<>();
+        List<ExpenseDto> expense = expenseService.getAllExpenses();
+        User user =  userService.getLoggedInUser();
+        data.put("expenses", expense);
+        data.put("user", user);
+        return data;
     }
 
 
