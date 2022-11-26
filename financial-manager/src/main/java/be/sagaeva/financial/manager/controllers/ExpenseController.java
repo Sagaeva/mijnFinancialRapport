@@ -5,10 +5,12 @@ import be.sagaeva.financial.manager.data.User;
 import be.sagaeva.financial.manager.dto.ExpenseDto;
 import be.sagaeva.financial.manager.dto.ExpenseFilterDto;
 
+import be.sagaeva.financial.manager.dto.IncomeDTO;
 import be.sagaeva.financial.manager.services.ExpenseService;
 
 import be.sagaeva.financial.manager.services.ExportPdfService;
 
+import be.sagaeva.financial.manager.services.IncomeService;
 import be.sagaeva.financial.manager.services.UserService;
 import be.sagaeva.financial.manager.util.DateTimeUtil;
 import be.sagaeva.financial.manager.validator.ExpenseValidator;
@@ -37,6 +39,7 @@ public class ExpenseController   {
     private final ExpenseService expenseService;
     private final ExportPdfService exportPdfService;
     private final UserService userService;
+    private final IncomeService incomeService;
 
 
     @GetMapping("/expenses")
@@ -95,9 +98,11 @@ public class ExpenseController   {
     private Map<String, Object> createdData() {
         Map<String, Object> data = new HashMap<>();
         List<ExpenseDto> expense = expenseService.getAllExpenses();
+        List<IncomeDTO> income = incomeService.getAllIncomes();
         User user =  userService.getLoggedInUser();
         data.put("expenses", expense);
         data.put("user", user);
+        data.put("incomes", income);
         return data;
     }
 

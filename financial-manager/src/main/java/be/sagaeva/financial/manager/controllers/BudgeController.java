@@ -39,13 +39,7 @@ public class BudgeController {
         List<IncomeDTO> listIncome = incomeService.getAllIncomes();
         model.addAttribute("expenses", listExpense);
         model.addAttribute("incomes", listIncome);
-        model.addAttribute("filterExpenses", new ExpenseFilterDto(DateTimeUtil
-                .getCurrentMonthStartDate(), DateTimeUtil.getCurrentMonthDate()));
-        model.addAttribute("filterIncomes", new IncomeFilterDto(DateTimeUtil
-                .getCurrentMonthStartDate(), DateTimeUtil.getCurrentMonthDate()));
-        String totalExpenses = expenseService.totalExpenses(listExpense);
         String totalIncomes = incomeService.totalIncomes(listIncome);
-     //   model.addAttribute("totalExpenses", totalExpenses);
         model.addAttribute("totalIncomes", totalIncomes);
         model.addAttribute("totalExpenses", expenseService.getAllExpenses());
         budgetService.saveBudget(budget);
@@ -54,28 +48,5 @@ public class BudgeController {
         return "budget-form";
 
     }
-
-
-
-  /*
-
-    @GetMapping("/check")
-    public String saveProficitOfDeficit(@ModelAttribute("budget") Budget budget,
-                                        Model model
-    ) {
-        budgetService.saveBudget(budget);
-        System.out.println("проверка" + budget);
-        model.addAttribute("surplus", budget.getSurplus());
-
-        return "budget-form";
-    }
-
-   */
-
-
-
-
-
-
 
 }
