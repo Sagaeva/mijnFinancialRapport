@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class FinancialManagerApplication {
 
+	public String PORT = System.getenv("PORT");
+
 	public static void main(String[] args) {
 		SpringApplication.run(FinancialManagerApplication.class, args);
 	}

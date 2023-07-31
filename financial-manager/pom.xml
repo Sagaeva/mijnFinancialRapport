@@ -14,7 +14,7 @@
 	<name>financial-manager</name>
 	<description> Spring Boot financial manager</description>
 	<properties>
-		<java.version>11.0.9</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -170,6 +170,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>docker-spring-boot</finalName>
 	</build>
 
 </project>
